@@ -4,6 +4,11 @@
 
 int sair = 0; // Controle global menu principal 
 
+void funcap (){
+    //Edrey esteve aqui :)
+    //Função para pegar os valores das teclas
+}
+
 //Funções Módulo 1 -  Contas
 int CPaddCont (int valorConta, int venc, char nomeConta[100]){
     printf("\n CPaddCont \n");
