@@ -10,7 +10,7 @@ void funcap (){
 }
 
 void criarBaseDados(){
-
+    //Função para validar se a base esta criada , caso não estiver fazer as tratativas para criar a base.
 }
 
 //Funções Módulo 1 -  Contas
@@ -199,7 +199,8 @@ void menuPrincipal (){
 }
 
 int main (){
-    setlocale(LC_ALL, "Portuguese");
+    setlocale(LC_ALL, "Portuguese"); // Reconhecendo caracteres da lingua portuguesa
+    
     void menuPrincipal ();
     
     do{
