@@ -9,6 +9,10 @@ void funcap (){
     //Função para pegar os valores das teclas
 }
 
+void criarBaseDados(){
+
+}
+
 //Funções Módulo 1 -  Contas
 int CPaddCont (int valorConta, int venc, char nomeConta[100]){
     printf("\n CPaddCont \n");
