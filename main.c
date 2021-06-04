@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <locale.h>
 
-int sair = 0; // Controle global menu principal 
-FILE *baseDeDados ; // Ponteiro global base de dados
+int sair = 0; //Controle global menu principal 
+int numeroTotalDeEntradas = 0 ; //Controle global Entrada
+float saldoCofrinho = 0;
+FILE *baseDeDados ; //Ponteiro global base de dados
 
 
 //Função para validar se a base esta criada , caso não estiver fazer as tratativas para criar a base.
-void criarBaseDados(){
+void criarBaseDados(char dadosADD[1000]){
     
     baseDeDados = fopen (".baseDeDados.txt","r");
     
@@ -18,14 +20,57 @@ void criarBaseDados(){
     }
 }
 
+//Struct dados das contas.
+struct conta {
+    char nomeConta [100];
+    int vencimentoDaConta;
+    int valorDaConta;   
+};
+
+struct conta DadosDaConta;
+
+//Struct dados da renda
+struct renda {
+    char nomeRenda [100];
+    int data;
+    float valorDaRenda;
+};
+
+struct renda DadosDaRenda;
+
 //Funções Módulo 1 -  Contas
 int CPaddCont (int valorConta, int venc, char nomeConta[100]){
-    printf("\n CPaddCont \n");
+    int idConta = 0;
+    
+    fflush(stdin);
+    printf("\nQual o nome da conta : ");
+    fgets(DadosDaConta.nomeConta,100,stdin);
+    fflush(stdin);
+    
+    printf("\nQual o valor da conta : ");
+    scanf("%d",&DadosDaConta.valorDaConta);
+    
+    printf("\nQual a data de vencimento da conta : ");
+    scanf("%d",&DadosDaConta.vencimentoDaConta);
+    
+    idConta += numeroTotalDeEntradas;
+
     return 0;
 }
 
 int CPeditCont (int idconta, int valorConta, char nomeConta[100], int venc){
-    printf("\n CPeditCont \n");
+    
+    fflush(stdin);
+    printf("\nQual o novo nome conta : ");
+    fgets(DadosDaConta.nomeConta,100,stdin);
+    fflush(stdin);
+    
+    printf("\nQual o novo valor da conta : ");
+    scanf("%d",&DadosDaConta.valorDaConta);
+    
+    printf("\nQual a nova data de vencimento da conta : ");
+    scanf("%d",&DadosDaConta.vencimentoDaConta);
+
     return 0;
 }
 
@@ -40,16 +85,37 @@ void CPlistCont (int idConta){
 
 // Funções Módulo 2 - Orçamento Mensal
 void OMaddRenda(float valor, char origemRenda[100], int dataEntrada){
-    printf("\nQMaddRenda\n");
+    
+    fflush(stdin);
+    printf("\nQual a origem da renda: ");
+    fgets(DadosDaRenda.nomeRenda,100,stdin);
+    fflush(stdin);
+
+    printf("\nQual o valor da renda: ");
+    scanf("%f", &DadosDaRenda.valorDaRenda);
+
+    printf("\nQual a data de vencimento: ");
+    scanf("%d", &DadosDaRenda.data);
 }
 
 int OMeditRenda(int idRenda, float valor, char origemRenda[100], int dataEntrada){
-    printf("\nQMediteRenda\n");
+    
+    fflush(stdin);
+    printf("\nQual a origem da renda: ");
+    fgets(DadosDaRenda.nomeRenda,100,stdin);
+    fflush(stdin);
+
+    printf("\nQual o novo valor da renda: ");
+    scanf("%f", &DadosDaRenda.valorDaRenda);
+
+    printf("\nQual a nova data de vencimento: ");
+    scanf("%d", &DadosDaRenda.data);
+    
     return 0;
 }
 
 int OMremove(int idRenda){
-    printf("\nQMRemove\n");
+    printf("\nRenda Removida \n");
     return 0;
 }
 
@@ -58,22 +124,45 @@ void OMorcamentoTotal (int idRenda){
 }
 
 //Funções Módulo 3 - Cofrinho
-int COaddFundos (float guardarValor){
-    printf("\nCOaddFundos\n");
+int COaddFundos (){
+    
+    float valor = 0;
+    
+    printf("\nQual valor deseja guardar :");    
+    scanf("%f",&valor);
+    
+    saldoCofrinho += valor;
+    
+    printf("\nForam guardados R$ %f , o saldo do cofrinho é R$ %f \n",valor,saldoCofrinho);
+    
     return 0;
 }
 
-int COremoveFundos (float removeValor){
-    printf("\nCOremoverFundos\n");
+int COremoveFundos (){
+    float valorSacar = 0;
+    
+    printf("\nQuanto você que sacar do cofrinho: ");
+    scanf("%f",&valorSacar); 
+    
+    if (saldoCofrinho >= valorSacar){
+        
+        saldoCofrinho -= valorSacar;
+        printf("\nVocê sacou R$ %f do cofrinho o saldo é %f \n",valorSacar,saldoCofrinho);
+    
+    }else{
+        printf("\nVocê não tem saldo suficiente no cofrinho.");
+    }
+    
     return 0;
 }
 
 float COrendFundos (int qtdMeses, float valorMes){
-    printf("\nCOrendFundos\n");
-    return 0;
+
+    float totalAcumulado = qtdMeses * valorMes;
+    return totalAcumulado;
 }
 float COsaldo(){
-    printf("\nCOsaldo\n");
+    printf("\nO saldo do cofrinho é : R$ %f \n",saldoCofrinho);
     return 0;
 }
 
@@ -176,10 +265,10 @@ void menuPrincipal (){
                             menuPrincipal ();
                             break;
                         case 1:
-                            COaddFundos(12);
+                            COaddFundos();
                             break;
                         case 2:
-                            COremoveFundos(1);
+                            COremoveFundos();
                             break;
                         case 3:
                             COsaldo();
@@ -208,7 +297,7 @@ int main (){
     void criarBaseDeDados();
     void menuPrincipal ();
     
-    criarBaseDados();
+    criarBaseDados("BBC");
     
     do{
         menuPrincipal ();
