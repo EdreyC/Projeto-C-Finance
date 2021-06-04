@@ -3,7 +3,7 @@
 #include <locale.h>
 
 int sair = 0; // Controle global menu principal 
-FILE *baseDeDados ; // Vetor global base de dados
+FILE *baseDeDados ; // Ponteiro global base de dados
 
 void funcap (){
     //Edrey esteve aqui :)
