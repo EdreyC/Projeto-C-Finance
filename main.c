@@ -5,10 +5,6 @@
 int sair = 0; // Controle global menu principal 
 FILE *baseDeDados ; // Ponteiro global base de dados
 
-void funcap (){
-    //Edrey esteve aqui :)
-    //Função para pegar os valores das teclas
-}
 
 //Função para validar se a base esta criada , caso não estiver fazer as tratativas para criar a base.
 void criarBaseDados(){
