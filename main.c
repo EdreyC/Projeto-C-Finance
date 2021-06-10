@@ -5,20 +5,7 @@
 int sair = 0; //Controle global menu principal 
 int numeroTotalDeEntradas = 0 ; //Controle global Entrada
 float saldoCofrinho = 0;
-FILE *baseDeDados ; //Ponteiro global base de dados
-
-
-//Função para validar se a base esta criada , caso não estiver fazer as tratativas para criar a base.
-void criarBaseDados(char dadosADD[1000]){
-    
-    baseDeDados = fopen (".baseDeDados.txt","r");
-    
-    if (baseDeDados == NULL){
-
-        baseDeDados = fopen(".baseDeDados.txt","w");
-    
-    }
-}
+FILE *dataBaseContasPagar;
 
 //Struct dados das contas.
 struct conta {
@@ -38,49 +25,117 @@ struct renda {
 
 struct renda DadosDaRenda;
 
+//Struct Adicionar Conta
+struct salvarConta{
+    char nome[50][100];
+    float valorConta[50];
+    char vencimentoConta[50][11];
+};
+
+struct salvarConta novaConta;
+
+//Struct Orçamento Mensal
+struct orcamento{
+    char nomeEntrada[50][100];
+    float valorEntrada[50];
+    char dataEntrada[50][11];
+};
+
+struct orcamento novaEntrada; 
+
+//Struct Cofrinho
+struct guardarValor{
+    float valor;
+};
+
+struct guardarValor addValor;
+
 //Funções Módulo 1 -  Contas
-int CPaddCont (int valorConta, int venc, char nomeConta[100]){
-    int idConta = 0;
-    
+int CPaddCont (){
+    int icont = 0, indiceSalvar = 0;
+
+    for(icont = 0;  icont < 50; icont++){
+        if(novaConta.valorConta[icont] == 0){
+            indiceSalvar = icont;
+
+            break;
+        }
+    }
+
+        fflush(stdin);
+        printf("\nInsira uma identificação para a conta: ");
+        gets(novaConta.nome[indiceSalvar]);
+
+        fflush(stdin);
+        printf("Insira a data de vencimento da conta (DD/MM/AAAA): ");
+        gets(novaConta.vencimentoConta[indiceSalvar]);
+        fflush(stdin);
+
+        printf("Insira o valor da conta: ");
+        scanf("%f", &novaConta.valorConta[indiceSalvar]);
+
+        dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "wb");
+        fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
+        fclose(dataBaseContasPagar);
+    return 0;
+}
+
+int CPeditCont (){
+    int icont = 0, idconta;
     fflush(stdin);
-    printf("\nQual o nome da conta : ");
-    fgets(DadosDaConta.nomeConta,100,stdin);
+    for(icont = 0;  icont < 50; icont++){
+        if(novaConta.valorConta[icont] != 0){
+            printf("ID da conta: %d \nNome da Conta: %s \nVencimento da Conta: %s \nValor da Conta: R$%.2f\n\n",icont, novaConta.nome[icont], novaConta.vencimentoConta[icont], novaConta.valorConta[icont]);
+        }
+    }
+    printf("Insira o ID da conta deseja editar: ");
+    scanf("%d", &idconta);
+
     fflush(stdin);
+        printf("\nInsira uma identificação para a conta: ");
+        gets(novaConta.nome[idconta]);
+
+        fflush(stdin);
+        printf("Insira a data de vencimento da conta (DD/MM/AAAA): ");
+        gets(novaConta.vencimentoConta[idconta]);
+        fflush(stdin);
+
+        printf("Insira o valor da conta: ");
+        scanf("%f", &novaConta.valorConta[idconta]);
+
+    printf("\nA ID %d editada com sucesso!\n", idconta);
+
     
-    printf("\nQual o valor da conta : ");
-    scanf("%d",&DadosDaConta.valorDaConta);
-    
-    printf("\nQual a data de vencimento da conta : ");
-    scanf("%d",&DadosDaConta.vencimentoDaConta);
-    
-    idConta += numeroTotalDeEntradas;
 
     return 0;
 }
 
-int CPeditCont (int idconta, int valorConta, char nomeConta[100], int venc){
-    
+int CPremoveCont (){
+    int icont = 0, idconta;
     fflush(stdin);
-    printf("\nQual o novo nome conta : ");
-    fgets(DadosDaConta.nomeConta,100,stdin);
-    fflush(stdin);
-    
-    printf("\nQual o novo valor da conta : ");
-    scanf("%d",&DadosDaConta.valorDaConta);
-    
-    printf("\nQual a nova data de vencimento da conta : ");
-    scanf("%d",&DadosDaConta.vencimentoDaConta);
+    for(icont = 0;  icont < 50; icont++){
+        if(novaConta.valorConta[icont] != 0){
+            printf("ID da conta: %d \nNome da Conta: %s \nVencimento da Conta: %s \nValor da Conta: R$%.2f\n\n",icont, novaConta.nome[icont], novaConta.vencimentoConta[icont], novaConta.valorConta[icont]);
+        }
+    }
+    printf("Qual conta deseja remover: ");
+    scanf("%d", &idconta);
+
+    novaConta.valorConta[idconta] = 0;
+
+    printf("\nA ID %d apagada com sucesso!\n", idconta);
 
     return 0;
 }
 
-int CPremoveCont (int idconta){
-    printf("\n CPremoveCont \n");
-    return 0;
-}
-
-void CPlistCont (int idConta){
-    printf("\n CPlistCont \n");
+void CPlistCont (){
+    int icont = 0;
+    fflush(stdin);
+    for(icont = 0;  icont < 50; icont++){
+        if(novaConta.valorConta[icont] != 0){
+            printf("ID da conta: %d \nNome da Conta: %s \nVencimento da Conta: %s \nValor da Conta: R$%.2f\n\n",icont, novaConta.nome[icont], novaConta.vencimentoConta[icont], novaConta.valorConta[icont]);
+        }
+    }
 }
 
 // Funções Módulo 2 - Orçamento Mensal
@@ -233,10 +288,10 @@ void menuPrincipal (){
                             menuPrincipal ();
                             break;
                         case 1:
-                            CPaddCont (1000, 10, "Cartão de Credito");
+                            CPaddCont ();
                             break;
                         case 2:
-                            CPlistCont (5);
+                            CPlistCont ();
                             break;
                         case 3:
                             CPeditCont (5, 500, "Coca-Cola", 6);
@@ -293,15 +348,20 @@ void menuPrincipal (){
 }
 
 int main (){
-    setlocale(LC_ALL, "Portuguese"); // Reconhecendo caracteres da lingua portuguesa
-    void criarBaseDeDados();
-    void menuPrincipal ();
+    setlocale(LC_ALL, "Portuguese"); //Reconhecendo caracteres da lingua portuguesa
+    FILE *baseDeDados;
+    int count = 0;
+   
+    for(count = 0; count <= 50 ; count++){
+        novaConta.valorConta[count] = 0;
+    }
     
-    criarBaseDados("BBC");
+    void menuPrincipal ();
     
     do{
         menuPrincipal ();
     }while(sair != 1);
+
         
     return 0;
 }
