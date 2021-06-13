@@ -56,7 +56,7 @@ int CPaddCont (){
         printf("Insira o valor da conta: ");
         scanf("%f", &novaConta.valorConta[indiceSalvar]);
 
-        dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "wb");
+        dataBaseContasPagar = fopen(".dataBaseContasPagar.bin", "wb");
         fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
         fclose(dataBaseContasPagar);
     return 0;
@@ -88,7 +88,7 @@ int CPeditCont (){
     printf("\nA ID %d editada com sucesso!\n", idconta);
 
     
-    dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "wb");
+    dataBaseContasPagar = fopen(".dataBaseContasPagar.bin", "wb");
     fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
     fclose(dataBaseContasPagar);
     return 0;
@@ -109,7 +109,7 @@ int CPremoveCont (){
 
     printf("\nA ID %d apagada com sucesso!\n", idconta);
 
-    dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "wb");
+    dataBaseContasPagar = fopen(".dataBaseContasPagar.bin", "wb");
     fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
     fclose(dataBaseContasPagar);
 
@@ -338,12 +338,12 @@ int main (){
     int count = 0;
     
     //Lendo base de dados das contas a pagar 
-    dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "rb");
+    dataBaseContasPagar = fopen(".dataBaseContasPagar.bin", "rb");
     if (dataBaseContasPagar == NULL){
         for(count = 0; count <= 50 ; count++){
             novaConta.valorConta[count] = 0;
         }
-        dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "wb");
+        dataBaseContasPagar = fopen(".dataBaseContasPagar.bin", "wb");
         fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
         fclose(dataBaseContasPagar);
     }
