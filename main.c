@@ -294,10 +294,10 @@ void menuPrincipal (){
                             CPlistCont ();
                             break;
                         case 3:
-                            CPeditCont (5, 500, "Coca-Cola", 6);
+                            CPeditCont ();
                             break;
                         case 4:
-                            CPremoveCont (5);
+                            CPremoveCont ();
                             break;
                         default:    
                             printf("\nOpção Inválida.\n");
@@ -349,12 +349,14 @@ void menuPrincipal (){
 
 int main (){
     setlocale(LC_ALL, "Portuguese"); //Reconhecendo caracteres da lingua portuguesa
-    FILE *baseDeDados;
+
+    /*
     int count = 0;
-   
+    
     for(count = 0; count <= 50 ; count++){
         novaConta.valorConta[count] = 0;
     }
+    */
     
     void menuPrincipal ();
     
