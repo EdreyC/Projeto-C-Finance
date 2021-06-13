@@ -6,6 +6,8 @@ int sair = 0; //Controle global menu principal
 int numeroTotalDeEntradas = 0 ; //Controle global Entrada
 float saldoCofrinho = 0;
 FILE *dataBaseContasPagar;
+FILE *dataBaseRenda;
+FILE *dataBaseCofrinho;
 
 //Struct Adicionar Conta
 struct salvarConta{
@@ -26,11 +28,12 @@ struct orcamento{
 struct orcamento novaEntrada; 
 
 //Struct Cofrinho
-struct guardarValor{
-    float valor;
+struct cofrinho{
+    char proposito[50][100];
+    float valor [50];
 };
 
-struct guardarValor addValor;
+struct cofrinho novocofrinho;
 
 //Funções Módulo 1 -  Contas
 int CPaddCont (){
@@ -347,13 +350,8 @@ int main (){
         fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
         fclose(dataBaseContasPagar);
     }
-    
     fread(&novaConta,sizeof(struct salvarConta),1,dataBaseContasPagar);
-    
     fclose(dataBaseContasPagar);
-    
-
-    
     
     void menuPrincipal ();
     
