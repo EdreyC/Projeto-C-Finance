@@ -7,24 +7,6 @@ int numeroTotalDeEntradas = 0 ; //Controle global Entrada
 float saldoCofrinho = 0;
 FILE *dataBaseContasPagar;
 
-//Struct dados das contas.
-struct conta {
-    char nomeConta [100];
-    int vencimentoDaConta;
-    int valorDaConta;   
-};
-
-struct conta DadosDaConta;
-
-//Struct dados da renda
-struct renda {
-    char nomeRenda [100];
-    int data;
-    float valorDaRenda;
-};
-
-struct renda DadosDaRenda;
-
 //Struct Adicionar Conta
 struct salvarConta{
     char nome[50][100];
@@ -106,7 +88,9 @@ int CPeditCont (){
     printf("\nA ID %d editada com sucesso!\n", idconta);
 
     
-
+    dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "wb");
+    fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
+    fclose(dataBaseContasPagar);
     return 0;
 }
 
@@ -124,6 +108,10 @@ int CPremoveCont (){
     novaConta.valorConta[idconta] = 0;
 
     printf("\nA ID %d apagada com sucesso!\n", idconta);
+
+    dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "wb");
+    fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
+    fclose(dataBaseContasPagar);
 
     return 0;
 }
@@ -143,28 +131,25 @@ void OMaddRenda(float valor, char origemRenda[100], int dataEntrada){
     
     fflush(stdin);
     printf("\nQual a origem da renda: ");
-    fgets(DadosDaRenda.nomeRenda,100,stdin);
     fflush(stdin);
 
     printf("\nQual o valor da renda: ");
-    scanf("%f", &DadosDaRenda.valorDaRenda);
 
     printf("\nQual a data de vencimento: ");
-    scanf("%d", &DadosDaRenda.data);
+   
 }
 
 int OMeditRenda(int idRenda, float valor, char origemRenda[100], int dataEntrada){
     
     fflush(stdin);
     printf("\nQual a origem da renda: ");
-    fgets(DadosDaRenda.nomeRenda,100,stdin);
     fflush(stdin);
 
     printf("\nQual o novo valor da renda: ");
-    scanf("%f", &DadosDaRenda.valorDaRenda);
+   
 
     printf("\nQual a nova data de vencimento: ");
-    scanf("%d", &DadosDaRenda.data);
+    
     
     return 0;
 }
@@ -349,14 +334,26 @@ void menuPrincipal (){
 
 int main (){
     setlocale(LC_ALL, "Portuguese"); //Reconhecendo caracteres da lingua portuguesa
-
-    /*
+   
     int count = 0;
     
-    for(count = 0; count <= 50 ; count++){
-        novaConta.valorConta[count] = 0;
+    //Lendo base de dados das contas a pagar 
+    dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "rb");
+    if (dataBaseContasPagar == NULL){
+        for(count = 0; count <= 50 ; count++){
+            novaConta.valorConta[count] = 0;
+        }
+        dataBaseContasPagar = fopen("dataBaseContasPagar.bin", "wb");
+        fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
+        fclose(dataBaseContasPagar);
     }
-    */
+    
+    fread(&novaConta,sizeof(struct salvarConta),1,dataBaseContasPagar);
+    
+    fclose(dataBaseContasPagar);
+    
+
+    
     
     void menuPrincipal ();
     
