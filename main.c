@@ -340,20 +340,43 @@ int main (){
    
     int count = 0;
     
-    //Lendo base de dados das contas a pagar 
+    //Lendo/crindo base de dados das contas a pagar 
     dataBaseContasPagar = fopen(".dataBaseContasPagar.bin", "rb");
     if (dataBaseContasPagar == NULL){
-        for(count = 0; count <= 50 ; count++){
+        for(count = 0; count <= 50; count++){
             novaConta.valorConta[count] = 0;
         }
         dataBaseContasPagar = fopen(".dataBaseContasPagar.bin", "wb");
         fwrite(&novaConta, sizeof(struct salvarConta), 1, dataBaseContasPagar);
-        fclose(dataBaseContasPagar);
     }
     fread(&novaConta,sizeof(struct salvarConta),1,dataBaseContasPagar);
     fclose(dataBaseContasPagar);
+
+    //Lendo/criando base de dados renda
+    dataBaseRenda = fopen(".dataBaseRenda.bin","rb");
+    if(dataBaseRenda == NULL){
+        for(count = 0; count <= 50; count++){
+            novaEntrada.valorEntrada[count] = 0;
+        }
+        dataBaseRenda = fopen(".dataBaseRenda","wb");
+        fwrite(&novaEntrada,sizeof(struct orcamento),1,dataBaseRenda);
+    }
+    fread(&novaEntrada,sizeof(struct orcamento),1,dataBaseRenda);
+    fclose(dataBaseRenda);
     
-    void menuPrincipal ();
+    //Lendo/Criando base de dados cofrinho
+    dataBaseCofrinho = fopen(".dataBaseCofrinho.bin","rb");
+    if (dataBaseCofrinho == NULL){
+        for(count = 0; count <= 50; count++){
+            novocofrinho.valor[count] = 0;
+        }
+        dataBaseCofrinho = fopen(".dataBaseCofrinho.bin","wb");
+        fwrite(&novocofrinho,sizeof(struct cofrinho),1,dataBaseCofrinho);
+    }
+    fread(&novocofrinho,sizeof(struct cofrinho),1,dataBaseCofrinho);
+    fclose(dataBaseCofrinho);
+    
+    void menuPrincipal ();  
     
     do{
         menuPrincipal ();
