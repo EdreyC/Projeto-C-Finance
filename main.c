@@ -130,40 +130,96 @@ void CPlistCont (){
 }
 
 // Funções Módulo 2 - Orçamento Mensal
-void OMaddRenda(float valor, char origemRenda[100], int dataEntrada){
+void OMaddRenda(){
     
+    int icont = 0, idrenda;
+    
+    for (icont = 0; icont <= 50; icont++){
+        if (novaEntrada.valorEntrada[icont] == 0){
+            idrenda = icont;
+            break;
+        }
+    }
+
     fflush(stdin);
     printf("\nQual a origem da renda: ");
+    gets(novaEntrada.nomeEntrada[idrenda]);
     fflush(stdin);
-
     printf("\nQual o valor da renda: ");
-
+    scanf("%f",&novaEntrada.valorEntrada[idrenda]);
+    fflush(stdin);
     printf("\nQual a data de vencimento: ");
-   
+    gets(novaEntrada.dataEntrada[idrenda]);
+    fflush(stdin);
+    
+    dataBaseRenda = fopen(".dataBaseRenda.bin","wb")    ;
+    fwrite(&novaEntrada,sizeof(struct orcamento),1,dataBaseRenda);
+    fclose(dataBaseRenda);
 }
 
-int OMeditRenda(int idRenda, float valor, char origemRenda[100], int dataEntrada){
-    
+int OMeditRenda(){
+    int idrenda = 0 ;
+    int icont = 0;
+    fflush(stdin);
+    for(icont = 0;  icont < 50; icont++){
+        if(novaEntrada.valorEntrada[icont] != 0){
+            printf("ID da conta: %d \nNome da Renda: %s \n Data adição da renda: %s \nValor da renda: R$%.2f\n\n",icont, novaEntrada.nomeEntrada[icont], novaEntrada.dataEntrada[icont], novaEntrada.valorEntrada[icont]);
+        }
+    }
+
+    printf("\nQual id da renda que deseja remover: \n");
+    scanf("%d",&idrenda);
+    novaEntrada.valorEntrada[idrenda] = 0;
+
     fflush(stdin);
     printf("\nQual a origem da renda: ");
+    gets(novaEntrada.nomeEntrada[idrenda]);
     fflush(stdin);
-
-    printf("\nQual o novo valor da renda: ");
-   
-
-    printf("\nQual a nova data de vencimento: ");
+    printf("\nQual o valor da renda: ");
+    scanf("%f",&novaEntrada.valorEntrada[idrenda]);
+    fflush(stdin);
+    printf("\nQual a data de vencimento: ");
+    gets(novaEntrada.dataEntrada[idrenda]);
+    fflush(stdin);
     
+    dataBaseRenda = fopen(".dataBaseRenda.bin","wb")    ;
+    fwrite(&novaEntrada,sizeof(struct orcamento),1,dataBaseRenda);
+    fclose(dataBaseRenda);
     
     return 0;
 }
 
-int OMremove(int idRenda){
-    printf("\nRenda Removida \n");
+int OMremove(){
+    
+    int icont = 0, idrenda;
+    fflush(stdin);
+    for(icont = 0;  icont < 50; icont++){
+        if(novaEntrada.valorEntrada[icont] != 0){
+            printf("ID da conta: %d \nNome da Renda: %s \n Data adição da renda: %s \nValor da renda: R$%.2f\n\n",icont, novaEntrada.nomeEntrada[icont], novaEntrada.dataEntrada[icont], novaEntrada.valorEntrada[icont]);
+        }
+    }
+    
+    printf("\nQual id da renda que deseja remover: \n");
+    scanf("%d",&idrenda);
+    novaEntrada.valorEntrada[idrenda] = 0;
+    
+    printf("\nRenda id: %d removida com sucesso\n",idrenda);
+
+    dataBaseRenda = fopen(".dataBaseRenda.bin","wb");
+    fwrite(&novaEntrada,sizeof(struct orcamento),1,dataBaseRenda);
+    fclose(dataBaseRenda);
+    
     return 0;
 }
 
-void OMorcamentoTotal (int idRenda){
-    printf("\nQMOrçamentoMensal\n");
+void OMorcamentoTotal (){
+    int icont = 0;
+    fflush(stdin);
+    for(icont = 0;  icont < 50; icont++){
+        if(novaEntrada.valorEntrada[icont] != 0){
+            printf("ID da conta: %d \nNome da Renda: %s \n Data adição da renda: %s \nValor da renda: R$%.2f\n\n",icont, novaEntrada.nomeEntrada[icont], novaEntrada.dataEntrada[icont], novaEntrada.valorEntrada[icont]);
+        }
+    }
 }
 
 //Funções Módulo 3 - Cofrinho
@@ -244,16 +300,16 @@ void menuPrincipal (){
                             menuPrincipal ();
                             break;
                         case 1:
-                            OMaddRenda(2,"renda",12);
+                            OMaddRenda();
                             break;
                         case 2:
-                            OMeditRenda(2,4,"reda",23);
+                            OMeditRenda();
                             break;
                         case 3:
-                            OMremove(2);
+                            OMremove();
                             break;
                         case 4:
-                            OMorcamentoTotal(4);
+                            OMorcamentoTotal();
                             break;
                         default:    
                             printf("\nOpção Inválida.\n");
@@ -358,7 +414,7 @@ int main (){
         for(count = 0; count <= 50; count++){
             novaEntrada.valorEntrada[count] = 0;
         }
-        dataBaseRenda = fopen(".dataBaseRenda","wb");
+        dataBaseRenda = fopen(".dataBaseRenda.bin","wb");
         fwrite(&novaEntrada,sizeof(struct orcamento),1,dataBaseRenda);
     }
     fread(&novaEntrada,sizeof(struct orcamento),1,dataBaseRenda);
