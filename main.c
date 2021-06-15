@@ -4,7 +4,7 @@
 
 int sair = 0; //Controle global menu principal 
 int numeroTotalDeEntradas = 0 ; //Controle global Entrada
-float saldoCofrinho = 0;
+float saldoCofrinho = 0, totalOrcamento = 0,totalContas = 0;
 FILE *dataBaseContasPagar;
 FILE *dataBaseRenda;
 FILE *dataBaseCofrinho;
@@ -34,6 +34,10 @@ struct cofrinho{
 };
 
 struct cofrinho novocofrinho;
+
+void atualizarDadosTotais (){
+   
+}
 
 //Funções Módulo 1 -  Contas
 int CPaddCont (){
@@ -148,7 +152,7 @@ void OMaddRenda(){
     printf("\nQual o valor da renda: ");
     scanf("%f",&novaEntrada.valorEntrada[idrenda]);
     fflush(stdin);
-    printf("\nQual a data de vencimento: ");
+    printf("\nQual a data de adição da renda (DD/MM/AAAA): ");
     gets(novaEntrada.dataEntrada[idrenda]);
     fflush(stdin);
     
@@ -178,7 +182,7 @@ int OMeditRenda(){
     printf("\nQual o valor da renda: ");
     scanf("%f",&novaEntrada.valorEntrada[idrenda]);
     fflush(stdin);
-    printf("\nQual a data de vencimento: ");
+    printf("\nQual a data de adição da renda (DD/MM/AAAA): ");
     gets(novaEntrada.dataEntrada[idrenda]);
     fflush(stdin);
     
@@ -213,13 +217,14 @@ int OMremove(){
 }
 
 void OMorcamentoTotal (){
-    int icont = 0;
+    int icont = 0; 
     fflush(stdin);
     for(icont = 0;  icont < 50; icont++){
         if(novaEntrada.valorEntrada[icont] != 0){
             printf("ID da conta: %d \nNome da Renda: %s \n Data adição da renda: %s \nValor da renda: R$%.2f\n\n",icont, novaEntrada.nomeEntrada[icont], novaEntrada.dataEntrada[icont], novaEntrada.valorEntrada[icont]);
         }
     }
+    printf("\nO orçamento total é: %.2f \n",totalOrcamento);
 }
 
 //Funções Módulo 3 - Cofrinho
@@ -273,6 +278,7 @@ void menuPrincipal (){
     int COcontrolMenu = 0; //Controle menu Cofrinho
     
     do{
+
         printf("\nMenu principal\n");
         printf("\n1- Orçamento Mensal\n2- Contas a pagar\n3- Cofrinho\n0- Fechar a Aplicação\n");
         printf("\nSelecione a sua opção: ");
