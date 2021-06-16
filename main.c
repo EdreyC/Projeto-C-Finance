@@ -218,12 +218,20 @@ int OMremove(){
 
 void OMorcamentoTotal (){
     int icont = 0; 
+    float totalOrcamento = 0;
     fflush(stdin);
     for(icont = 0;  icont < 50; icont++){
         if(novaEntrada.valorEntrada[icont] != 0){
             printf("ID da conta: %d \nNome da Renda: %s \n Data adição da renda: %s \nValor da renda: R$%.2f\n\n",icont, novaEntrada.nomeEntrada[icont], novaEntrada.dataEntrada[icont], novaEntrada.valorEntrada[icont]);
         }
     }
+    
+    for(icont = 0;  icont < 50; icont++){
+        if(novaEntrada.valorEntrada[icont] != 0){
+            totalOrcamento += novaEntrada.valorEntrada[icont];
+        }
+    }
+    
     printf("\nO orçamento total é: %.2f \n",totalOrcamento);
 }
 
@@ -237,7 +245,7 @@ int COaddFundos (){
     
     saldoCofrinho += valor;
     
-    printf("\nForam guardados R$ %f , o saldo do cofrinho é R$ %f \n",valor,saldoCofrinho);
+    printf("\nForam guardados R$ %.2f , o saldo do cofrinho é R$ %.2f \n",valor,saldoCofrinho);
     
     return 0;
 }
@@ -251,7 +259,7 @@ int COremoveFundos (){
     if (saldoCofrinho >= valorSacar){
         
         saldoCofrinho -= valorSacar;
-        printf("\nVocê sacou R$ %f do cofrinho o saldo é %f \n",valorSacar,saldoCofrinho);
+        printf("\nVocê sacou R$ %.2f do cofrinho o saldo é %.2f \n",valorSacar,saldoCofrinho);
     
     }else{
         printf("\nVocê não tem saldo suficiente no cofrinho.");
@@ -260,13 +268,24 @@ int COremoveFundos (){
     return 0;
 }
 
-float COrendFundos (int qtdMeses, float valorMes){
+float COrendFundos (){
+    float valorMes = 0;
+    int  qtdMeses = 0;
+
+    printf("\nInsira o valor que você quer guardar mensalmente: ");
+    scanf("%f", &valorMes);
+
+    printf("\nInforme durante quantos meses você irá depositar esse mesmo valor: ");
+    scanf("%d", &qtdMeses);
 
     float totalAcumulado = qtdMeses * valorMes;
-    return totalAcumulado;
+
+    printf("\nNo final de %i meses, você terá guardado R$ %.2f reais.", qtdMeses, totalAcumulado);
+
+    return 0;
 }
 float COsaldo(){
-    printf("\nO saldo do cofrinho é : R$ %f \n",saldoCofrinho);
+    printf("\nO saldo do cofrinho é : R$ %.2f \n",saldoCofrinho);
     return 0;
 }
 
@@ -379,7 +398,7 @@ void menuPrincipal (){
                             COsaldo();
                             break;
                         case 4:
-                            COrendFundos(2,34);
+                            COrendFundos();
                             break;
                         default:    
                             printf("\nOpção Inválida.\n");
